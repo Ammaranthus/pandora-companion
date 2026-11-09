@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mothership Companion · Пандора</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="top">
+      <div class="brand">
+        <p class="kicker">FSE · Mothership 1e</p>
+        <h1>Companion</h1>
+      </div>
+      <div class="top-actions" id="top-actions"></div>
+    </header>
+
+    <aside class="dice-rail" id="dice-rail" aria-label="Кубы">
+      <p class="rail-title">Кубы</p>
+      <div class="mode-seg" id="mode-seg">
+        <button type="button" data-mode="normal" class="is-on">обычно</button>
+        <button type="button" data-mode="adv">преим.</button>
+        <button type="button" data-mode="dis">помеха</button>
+      </div>
+      <div class="rail-btns" id="pool-btns">
+        <button type="button" data-pool="d4">d4</button>
+        <button type="button" data-pool="d6">d6</button>
+        <button type="button" data-pool="d10">d10</button>
+        <button type="button" data-pool="d20">d20</button>
+        <button type="button" data-pool="d100">d100</button>
+      </div>
+      <p class="pool-hint">Клик — добавить куб · Shift+клик — убрать</p>
+      <div class="pool-bar">
+        <span id="pool-summary" class="pool-summary">набор пуст</span>
+        <button type="button" class="btn ghost small" id="pool-clear" title="Очистить набор">сброс</button>
+        <button type="button" class="btn primary" id="pool-roll">бросить</button>
+      </div>
+      <form id="custom-dice" class="custom-dice">
+        <input name="expr" type="text" placeholder="2d6+1" autocomplete="off" spellcheck="false">
+        <button type="submit">бросок</button>
+      </form>
+      <div class="log" id="roll-log" aria-live="polite"></div>
+    </aside>
+
+    <main id="main"></main>
+  </div>
+  <div id="modal-root"></div>
+  <input type="file" id="import-file" accept="application/json,.json" hidden>
+  <input type="file" id="avatar-file" accept="image/*" hidden>
+  <script src="app.js"></script>
+</body>
+</html>
