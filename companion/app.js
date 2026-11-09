@@ -1186,10 +1186,10 @@
     return /^https:\/\/(discord\.com|discordapp\.com)\/api\/webhooks\/\d+\/[\w-]+/i.test(String(url || "").trim());
   }
 
-  /** На https-сайте Discord блокирует прямой fetch (CORS) — шлём через /api/discord. */
+  /** Прокси Cloudflare Pages Function — только на *.pages.dev (на GitHub Pages FormData идёт напрямую). */
   function useDiscordProxy() {
     try {
-      return location.protocol === "https:" && !/^(localhost|127\.0\.0\.1)$/i.test(location.hostname || "");
+      return /\.pages\.dev$/i.test(location.hostname || "");
     } catch (_) {
       return false;
     }
@@ -1197,31 +1197,20 @@
 
   async function postDiscordWebhook(webhookUrl, { username, embeds, avatarBlob }) {
     const url = String(webhookUrl || "").trim();
+    const payload = JSON.stringify({ username, embeds });
+    // FormData / multipart — «простой» CORS-запрос: Discord получает сообщение
+    // даже без Access-Control-Allow-Origin (в отличие от application/json).
     if (useDiscordProxy()) {
-      if (avatarBlob) {
-        const form = new FormData();
-        form.append("url", url);
-        form.append("payload_json", JSON.stringify({ username, embeds }));
-        form.append("files[0]", avatarBlob, "avatar.jpg");
-        return fetch("/api/discord", { method: "POST", body: form });
-      }
-      return fetch("/api/discord", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, username, embeds }),
-      });
-    }
-    if (avatarBlob) {
       const form = new FormData();
-      form.append("payload_json", JSON.stringify({ username, embeds }));
-      form.append("files[0]", avatarBlob, "avatar.jpg");
-      return fetch(url, { method: "POST", body: form });
+      form.append("url", url);
+      form.append("payload_json", payload);
+      if (avatarBlob) form.append("files[0]", avatarBlob, "avatar.jpg");
+      return fetch("/api/discord", { method: "POST", body: form });
     }
-    return fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, embeds }),
-    });
+    const form = new FormData();
+    form.append("payload_json", payload);
+    if (avatarBlob) form.append("files[0]", avatarBlob, "avatar.jpg");
+    return fetch(url, { method: "POST", body: form });
   }
 
   function webhookColorForKind(kind) {
