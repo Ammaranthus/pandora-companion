@@ -316,155 +316,47 @@
     "Без шлема", "Гидратная чесотка", "Пустой кровь", "Соль Дыхания",
   ];
 
-  // Mothership 1e Player's Survival Guide — таблица паники (d20).
-  // Проверка: бросок Panic Die (d20) > стресса = держится; ≤ стресса = паника, число = строка.
+  // Домовка: эффекты паники = 2к10 + текущий стресс.
   const PANIC_TABLE = [
-    {
-      roll: 1,
-      en: "ADRENALINE RUSH",
-      title: "Выброс адреналина",
-      text: "[+] на все броски на следующие 2d10 минут. Снизьте стресс на 1d5.",
-      flags: ["temp"],
-    },
-    {
-      roll: 2,
-      en: "NERVOUS",
-      title: "Нервозность",
-      text: "Получите 1 стресс.",
-      flags: ["stress"],
-    },
-    {
-      roll: 3,
-      en: "JUMPY",
-      title: "Вздрог",
-      text: "Получите 1 стресс. Все близкие члены экипажа получают 2 стресса.",
-      flags: ["stress", "crew"],
-    },
-    {
-      roll: 4,
-      en: "OVERWHELMED",
-      title: "Перегрузка",
-      text: "[−] на все броски на следующие 1d10 минут. Увеличьте минимум стресса на 1.",
-      flags: ["temp", "min"],
-    },
-    {
-      roll: 5,
-      en: "COWARD",
-      title: "Трус",
-      text: "Получите новое состояние: чтобы вступить в насилие, вы должны пройти испытание Страха, иначе бежите.",
-      flags: ["condition"],
-    },
-    {
-      roll: 6,
-      en: "FRIGHTENED",
-      title: "Испуган",
-      text: "Получите новое состояние: при встрече с тем, что вас напугало, пройдите испытание Страха [−] или получите 1d5 стресса.",
-      flags: ["condition"],
-    },
-    {
-      roll: 7,
-      en: "NIGHTMARES",
-      title: "Кошмары",
-      text: "Получите новое состояние: сон даётся с трудом; [−] на испытания отдыха.",
-      flags: ["condition"],
-    },
-    {
-      roll: 8,
-      en: "LOSS OF CONFIDENCE",
-      title: "Потеря уверенности",
-      text: "Получите новое состояние: выберите один навык и потеряйте бонус этого навыка.",
-      flags: ["condition"],
-    },
-    {
-      roll: 9,
-      en: "DEFLATED",
-      title: "Подавленность",
-      text: "Получите новое состояние: всякий раз, когда близкий член экипажа проваливает испытание, вы получаете 1 стресс.",
-      flags: ["condition"],
-    },
-    {
-      roll: 10,
-      en: "DOOMED",
-      title: "Обречённость",
-      text: "Получите новое состояние: вы чувствуете себя проклятым и невезучим. Все критические успехи вместо этого становятся критическими провалами.",
-      flags: ["condition"],
-    },
-    {
-      roll: 11,
-      en: "SUSPICIOUS",
-      title: "Подозрительность",
-      text: "На следующую неделю: всякий раз, когда кто-то присоединяется к экипажу (даже если отсутствовал недолго), пройдите испытание Страха или получите 1 стресс.",
-      flags: ["temp"],
-    },
-    {
-      roll: 12,
-      en: "HAUNTED",
-      title: "Преследуемый",
-      text: "Получите новое состояние: что-то начинает навещать персонажа ночью. Во снах. Краем глаза. И вскоре оно начнёт требовать.",
-      flags: ["condition"],
-    },
-    {
-      roll: 13,
-      en: "DEATH WISH",
-      title: "Жажда смерти",
-      text: "На следующие 24 часа: всякий раз, сталкиваясь с незнакомцем или известным врагом, пройдите испытание Рассудка или немедленно атакуйте его.",
-      flags: ["temp"],
-    },
-    {
-      roll: 14,
-      en: "PROPHETIC VISION",
-      title: "Пророческое видение",
-      text: "Персонаж немедленно переживает сильную галлюцинацию или видение грядущего ужаса либо чудовищного события. Увеличьте минимум стресса на 2.",
-      flags: ["min"],
-    },
-    {
-      roll: 15,
-      en: "CATATONIC",
-      title: "Кататония",
-      text: "Становитесь неотзывчивы и неподвижны на 2d10 минут. Снизьте стресс на 1d10.",
-      flags: ["temp"],
-    },
-    {
-      roll: 16,
-      en: "RAGE",
-      title: "Ярость",
-      text: "[+] на все броски урона на следующие 1d10 часов. Все члены экипажа получают 1 стресс.",
-      flags: ["temp", "crew"],
-    },
-    {
-      roll: 17,
-      en: "SPIRALING",
-      title: "Спираль",
-      text: "Получите новое состояние: проверки паники совершаются с помехой [−].",
-      flags: ["condition"],
-    },
-    {
-      roll: 18,
-      en: "COMPOUNDING PROBLEMS",
-      title: "Наслоение проблем",
-      text: "Бросьте дважды по этой таблице. Увеличьте минимум стресса на 1.",
-      flags: ["min"],
-    },
-    {
-      roll: 19,
-      en: "HEART ATTACK / SHORT CIRCUIT",
-      title: "Инфаркт / короткое замыкание",
-      text: "Уменьшите максимум ран на 1. [−] на все броски на 1d10 часов. Увеличьте минимум стресса на 1. (Для андроидов — короткое замыкание.)",
-      flags: ["min", "wound"],
-    },
-    {
-      roll: 20,
-      en: "RETIRE",
-      title: "Отставка",
-      text: "Создайте нового персонажа. Текущий лист передаётся Смотрителю — вы больше не управляете этим персонажем.",
-      flags: ["retire"],
-    },
+    { min: 2, max: 3, title: "Концентрация", text: "Преимущество на все броски в течение следующих 1к10 часов." },
+    { min: 4, max: 5, title: "Сильный выброс адреналина", text: "Преимущество на все броски в течение следующих 3к10 минут." },
+    { min: 6, max: 7, title: "Незначительный выброс адреналина", text: "Преимущество на все броски в течение следующих 1к10 минут." },
+    { min: 8, max: 9, title: "Беспокойство", text: "Получи 1 Стресс." },
+    { min: 10, max: 11, title: "Нервный тик", text: "Получи 2 Стресса. Соратники рядом получают 1 Стресс." },
+    { min: 12, max: 13, title: "Трусость", text: "Получи 1 Стресс. Следующие 1к10 часов вы должны проходить проверку Страха для начала сражения или бежать." },
+    { min: 14, max: 15, title: "Галлюцинации", text: "Следующие 2к10 часов (определяется тайно) у вас есть проблемы в отделении реальности от фантазии." },
+    { min: 16, max: 17, title: "Парализующий страх", text: "Получите новую постоянную фобию. Всякий раз, когда вы сталкиваетесь с этой фобией пройдите проверку Страха с Помехой или получите 1к10 Стресса." },
+    { min: 18, max: 19, title: "Ошеломлён", text: "Получи 1к10 Стресса." },
+    { min: 20, max: 21, title: "Испуг", text: "Издать леденящий кровь вопль. Все броски с Помехой 2к10 минут." },
+    { min: 22, max: 22, title: "Паранойя", text: "Следующие 1к10 дней, всякий раз, когда кто-то присоединяется к вашей группе (даже если он отошёл ненадолго), пройди проверку Страха или получи 1 Стресс." },
+    { min: 23, max: 23, title: "Жажда смерти", text: "Следующие Хк10 дней (где Х = Стресс), всякий раз, когда вы сталкиваетесь с незнакомцем или известным врагом, вы должны пройти проверку Рассудка или немедленно атаковать его." },
+    { min: 24, max: 24, title: "Ступор", text: "Вы неотзываетесь и не двигаетесь следующие Хк10 минут (где Х = Стресс)." },
+    { min: 25, max: 25, title: "Сломлен", text: "Следующие Хк10 дней (где Х = Стресс), паникуй всякий раз, когда рядом соратник проваливает Спасбросок." },
+    { min: 26, max: 26, title: "Психоз", text: "Немедленно атакуйте ближайшего соратника, пока вы не нанесёте, по крайней мере, 2к10 повреждений или 1 Хит, в зависимости от того, что случится раньше. Если поблизости нет соратника, вы нападаете на окружение." },
+    { min: 27, max: 27, title: "Гора проблем", text: "Брось по этой таблице дважды и прими результат." },
+    { min: 28, max: 28, title: "Погружение в безумие", text: "Получи две новых фобии. Ваш стресс нельзя снять ниже 5." },
+    { min: 29, max: 29, title: "Психологический коллапс", text: "Ваш персонаж становится постоянно, непоправимо безумным. Теперь за вашего персонажа играет Смотритель." },
+    { min: 30, max: null, title: "Сердечный приступ", text: "Мгновенная смерть." },
   ];
 
-  const PANIC = {};
-  PANIC_TABLE.forEach((row) => {
-    PANIC[row.roll] = `${row.title} (${row.en}). ${row.text}`;
-  });
+  function panicRangeLabel(row) {
+    if (!row) return "—";
+    if (row.max == null) return `${row.min}+`;
+    if (row.min === row.max) return String(row.min);
+    return `${row.min}–${row.max}`;
+  }
+
+  function lookupPanic(total) {
+    const n = Number(total) || 0;
+    return PANIC_TABLE.find((row) => {
+      if (row.max == null) return n >= row.min;
+      return n >= row.min && n <= row.max;
+    }) || PANIC_TABLE[PANIC_TABLE.length - 1];
+  }
+
+  function panicBlurb(row) {
+    return row ? `${row.title}. ${row.text}` : "Эффект паники.";
+  }
 
   // Mothership 1e PSG — таблица ран (d10, где 0 = «00»). Текст по mothershiprpg.ru / PSG.
   const WOUND_TYPES = [
@@ -567,6 +459,287 @@
       gore: "Голова размозжена. Без испытания смерти. Ты умер.",
     },
   ];
+
+  // Домовная таблица крит. ранений (для крит. попаданий врагов по игрокам).
+  // Сначала 1d10 (0–9) — часть тела, затем 1d10 (0–9) — тяжесть.
+  const CRIT_PARTS = [
+    { id: 0, name: "Л. нога" },
+    { id: 1, name: "П. нога" },
+    { id: 2, name: "Л. рука" },
+    { id: 3, name: "П. рука" },
+    { id: 4, name: "Внутр. органы" },
+    { id: 5, name: "Торс" },
+    { id: 6, name: "Живот" },
+    { id: 7, name: "Грудь" },
+    { id: 8, name: "Спина" },
+    { id: 9, name: "Голова" },
+  ];
+  const CRIT_SEVERITIES = [
+    { id: 0, name: "Царапина" },
+    { id: 1, name: "Сотрясение (контузия)" },
+    { id: 2, name: "Растяжение" },
+    { id: 3, name: "Лёгкое ранение" },
+    { id: 4, name: "Перелом" },
+    { id: 5, name: "Временное увечье" },
+    { id: 6, name: "Тяжёлое ранение" },
+    { id: 7, name: "Постоянное увечье" },
+    { id: 8, name: "Кровотечение" },
+    { id: 9, name: "Смертельное ранение", hint: "смерть в 1к10 мин." },
+  ];
+  // CRIT_CELLS[severity][part]
+  const CRIT_CELLS = [
+    [
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Поверхностная рана. Незначительный шрам. +1 урон.",
+      "Кровь в глазах. Ослеплён (1 раунд)"
+    ],
+    [
+      "Оступился. Упал. +1 урон.",
+      "Оступился. Упал. +1 урон.",
+      "Оружие выбито из рук. +1 урон.",
+      "Оружие выбито из рук. +1 урон.",
+      "Спасбросок Тела или сбит с ног. +1к5 урон.",
+      "Спасбросок Тела или сбит с ног. +1к5 урон.",
+      "Спасбросок Тела или сбит с ног. +1к5 урон.",
+      "Спасбросок Тела или сбит с ног. +1к5 урон.",
+      "Спасбросок Тела или сбит с ног. +1к5 урон.",
+      "Череп проломлен. Помеха к Бою на 1к10 раундов. +1к5 урона."
+    ],
+    [
+      "Потянул лодыжку. +1к5 урона.",
+      "Потянул лодыжку. +1к5 урона.",
+      "Мешает поднимать руку. +1к5 урона.",
+      "Мешает поднимать руку. +1к5 урона.",
+      "Шатает. Следующая атака с Помехой.",
+      "Шатает. Следующая атака с Помехой.",
+      "Шатает. Следующая атака с Помехой.",
+      "Шатает. Следующая атака с Помехой.",
+      "Шатает. Следующая атака с Помехой.",
+      "Лицо навсегда обезображено. Минимальный стресс: 5."
+    ],
+    [
+      "Выбита коленная чашечка. -1к10 Скорости. +1к10 урона.",
+      "Выбита коленная чашечка. -1к10 Скорости. +1к10 урона.",
+      "Сильный ушиб. -1к10 Силы. +1к10 урона.",
+      "Сильный ушиб. -1к10 Силы. +1к10 урона.",
+      "Печень повреждена. +1к10 урона/день.",
+      "Удар в промежность. Спасбросок Тела или сбит с ног. +1к5 урона.",
+      "Удар в солнечное сплетение. 1 раунд прийти в себя. +1к5 урона.",
+      "Получил под дых. Сбил дыхание. Скорость/2 пока не отдышался за 1 раунд.",
+      "Получил под дых. Сбил дыхание. Скорость/2 пока не отдышался за 1 раунд.",
+      "Двоится в глазах. Бой / 2 до конца столкновения."
+    ],
+    [
+      "1к5 пальцев сломано. +1 урон за каждый палец.",
+      "1к5 пальцев сломано. +1 урон за каждый палец.",
+      "1к5 пальцев сломано. +1 урон за каждый палец.",
+      "1к5 пальцев сломано. +1 урон за каждый палец.",
+      "Почка отбита. +1к10 +5 урона.",
+      "Вывих плеча. +2к10 урона. +1к5 урона при вправлении.",
+      "Удар в живот. Спасбросок Тела или опоражнится кишечник +1к10 +2 урона.",
+      "Тошнота. Спасбросок Тела или вырвет. +1к10 урона.",
+      "Бёдра пробиты. -3к10 Скорость. +2к10 урона.",
+      "Выбито 3к10 зубов. +1 урон за каждый зуб."
+    ],
+    [
+      "Нога сломана. +1к10 урона.",
+      "Нога сломана. +1к10 урона.",
+      "Рука сломана. +1к10 +5 урона.",
+      "Рука сломана. +1к10 +5 урона.",
+      "Внутреннее кровотечение. +1к10 урона за раунд в течение 1к10 раундов.",
+      "1к5 рёбер сломано. +2 урона за ребро. -1к10 Скорость и Сила",
+      "Брюшина глубоко рассечена. +1к10 урона в час. +1к5 урона.",
+      "Ключица сломана. -3к10 Сила. +1к10 урона.",
+      "1к5 рёбер сломано. +2 урона за ребро. -1к10 Скорость и Сила",
+      "Потеря сознания. Бросай по таблице Бессознательности (10.4)."
+    ],
+    [
+      "1к5 пальцев оторвано/искалечено. -2к10 Скорость. +1 урон за каждый палец.",
+      "1к5 пальцев оторвано/искалечено. -2к10 Скорость. +1 урон за каждый палец.",
+      "1к5 пальцев оторвано/искалечено. +1 урон за каждый палец.",
+      "1к5 пальцев оторвано/искалечено. +1 урон за каждый палец.",
+      "Общий шок. Тело / 2. +2к10 урона.",
+      "Невыносимая боль. Спасбросок Тела сохранит сознание. +5к10 урона.",
+      "Живот нещадно избит. +4к10 урона и сбит с ног.",
+      "Грудина треснула. +2к10 урона.",
+      "Смещение позвонков. -2к10 Бой, Скорость и Сила. +2к10 урона.",
+      "Горло повреждено. Не можешь говорить. +3к10 урона."
+    ],
+    [
+      "Ступня оторвана или искалечена. Скорость / 2. +2к10 +5 урона.",
+      "Ступня оторвана или искалечена. Скорость / 2. +2к10 +5 урона.",
+      "Кисть оторвана или искалечена. Бой / 2. +2к10 +5 урона.",
+      "Кисть оторвана или искалечена. Бой / 2. +2к10 +5 урона.",
+      "Почки отбиты. 1к10 урона за раунд в течение 1к10+1 раундов.",
+      "Плечо пробито насквозь. +2к10 урона.",
+      "Вырван кусок плоти. Ужасный шрам. +1к10 урона.",
+      "Грудная мышца вырвана. +1к10 - 5 урона.",
+      "Позвоночник треснул. Парализован ниже пояса. Скорость 0.",
+      "Глаза выколоты. Слепота. +2к10 урона."
+    ],
+    [
+      "Порез бедренной артерии. +4к10 урона.",
+      "Порез бедренной артерии. +4к10 урона.",
+      "Порез плечевой артерии. +4к10 урона.",
+      "Порез плечевой артерии. +4к10 урона.",
+      "Обширное внутреннее кровотечение. +6к10 урона в течение 1к10 часов.",
+      "Лёгкое пробито. +1к10 урона за раунд, пока не вылечишь.",
+      "Кишечник пробит. +2к10 урона.",
+      "Проникающее ранение грудины. +2к10 урона в раунд, 1к10 раундов.",
+      "Позвоночник раздроблен. Навсегда парализован.",
+      "Кровоизлияние в мозг через 1к10 дней. Спасбросок Тела или смерть. Диагностируется при сканировании."
+    ],
+    [
+      "Нога оторвана. Скорость 0. +2к10 урона.",
+      "Нога оторвана. Скорость 0. +2к10 урона.",
+      "Рука оторвана. +2к10 урона.",
+      "Рука оторвана. +2к10 урона.",
+      "Кишки размотаны наружу, словно верёвки. +1к10 урона.",
+      "Желудок взрывается. Кислота заполняет внутренности. +1к10 урона.",
+      "Тело разорвано на две части. Мгновенная смерть.",
+      "Сердце пробито. Мгновенная смерть.",
+      "Спина переломана пополам. Мгновенная смерть.",
+      "Вся голова превращается в месиво и мозги ошмётками разлетаются по всей округе. Мгновенная/необратимая смерть."
+    ]
+  ];
+
+  function critCell(part, sev) {
+    return (CRIT_CELLS[sev] && CRIT_CELLS[sev][part]) || "—";
+  }
+
+  function critDiceExpr(n, sides, mod = 0) {
+    let e = `${n}d${sides}`;
+    if (mod) e += mod > 0 ? `+${mod}` : String(mod);
+    return e;
+  }
+
+  /** Достаёт из текста крита: бонусный урон, тики, «за палец/ребро», длительность. */
+  function parseCritDamageJobs(text) {
+    const t = String(text || "").replace(/[−–—]/g, "-");
+    const jobs = [];
+    const used = [];
+    const mark = (a, b) => used.push([a, b]);
+    const overlaps = (a, b) => used.some(([x, y]) => a < y && b > x);
+
+    const perRe = /(\d+)\s*[кkd]\s*(\d+)\s+(пальц\w*|зуб\w*|рёбер\w*|ребер\w*)([\s\S]{0,80}?)\+(\d+)\s*урон[а]?\s+за\s+(каждый(?:\s+\w+)?|ребро)/gi;
+    let m;
+    while ((m = perRe.exec(t))) {
+      const start = m.index;
+      const end = m.index + m[0].length;
+      if (overlaps(start, end)) continue;
+      mark(start, end);
+      jobs.push({
+        kind: "per",
+        countExpr: critDiceExpr(+m[1], +m[2]),
+        per: +m[5],
+        unit: m[3],
+      });
+    }
+
+    const dmgRe = /\+?\s*(\d+)\s*[кkd]\s*(\d+)(?:\s*([+-])\s*(\d+))?\s*урон[а]?/gi;
+    while ((m = dmgRe.exec(t))) {
+      const start = m.index;
+      const end = m.index + m[0].length;
+      if (overlaps(start, end)) continue;
+      const after = t.slice(end);
+      const ctxM = after.match(/^\s*(за\s+раунд|в\s+раунд|\/\s*день|в\s+час|в\s+течение|при\s+вправлен\w*)/i);
+      const ctx = ctxM ? ctxM[1].toLowerCase().replace(/\s+/g, " ") : "";
+      if (ctx.startsWith("при вправлен")) {
+        mark(start, end + (ctxM ? ctxM[0].length : 0));
+        continue;
+      }
+      const mod = m[3] ? (m[3] === "-" ? -Number(m[4]) : Number(m[4])) : 0;
+      const expr = critDiceExpr(+m[1], +m[2], mod);
+      let kind = "damage";
+      let note = "бонусный урон";
+      if (/за раунд|в раунд|\/ ?день|в час/.test(ctx)) {
+        kind = "tick";
+        note = "тик сейчас";
+      } else if (/в течение/.test(ctx)) {
+        note = "суммарный урон";
+      }
+      mark(start, end + (ctxM ? ctxM[0].length : 0));
+      jobs.push({ kind, expr, note });
+    }
+
+    const flatRe = /\+(\d+)\s*урон[а]?(?!\s*за\s)/gi;
+    while ((m = flatRe.exec(t))) {
+      const start = m.index;
+      const end = m.index + m[0].length;
+      if (overlaps(start, end)) continue;
+      mark(start, end);
+      jobs.push({ kind: "flat", amount: +m[1], note: "бонусный урон" });
+    }
+
+    const durRe = /в\s+течение\s+(\d+)\s*[кkd]\s*(\d+)(?:\s*([+-])\s*(\d+))?/gi;
+    while ((m = durRe.exec(t))) {
+      const mod = m[3] ? (m[3] === "-" ? -Number(m[4]) : Number(m[4])) : 0;
+      jobs.push({
+        kind: "duration",
+        expr: critDiceExpr(+m[1], +m[2], mod),
+        note: "длительность",
+      });
+    }
+    return jobs;
+  }
+
+  function rollCritExtraDamage(text, who = "крит") {
+    const jobs = parseCritDamageJobs(text);
+    const lines = [];
+    for (const job of jobs) {
+      if (job.kind === "per") {
+        const count = parseDice(job.countExpr);
+        if (!count) continue;
+        const total = count.total * job.per;
+        pushLog({
+          who,
+          icon: "💥",
+          badge: "УРОН",
+          text: `крит · за каждый: ${job.countExpr} → [${count.rolls.join("+")}] = ${count.total} × ${job.per} → итого ${total}`,
+          kind: "damage",
+          emphasize: String(total),
+        });
+        lines.push(`за каждый ${count.total}×${job.per} = ${total}`);
+      } else if (job.kind === "flat") {
+        pushLog({
+          who,
+          icon: "💥",
+          badge: "УРОН",
+          text: `крит · ${job.note}: +${job.amount} → итого ${job.amount}`,
+          kind: "damage",
+          emphasize: String(job.amount),
+        });
+        lines.push(`+${job.amount}`);
+      } else if (job.kind === "duration") {
+        const d = parseDice(job.expr);
+        if (!d) continue;
+        let detail = `${job.expr} → [${d.rolls.join("+")}]`;
+        if (d.mod) detail += d.mod > 0 ? `+${d.mod}` : String(d.mod);
+        detail += ` = ${d.total}`;
+        pushLog({
+          who,
+          icon: "⏱",
+          badge: "ДЛИТ.",
+          text: `крит · длительность: ${detail}`,
+          kind: "ok",
+          emphasize: String(d.total),
+        });
+        lines.push(`длительность ${d.total}`);
+      } else {
+        const label = job.kind === "tick" ? `крит · ${job.note}` : `крит · ${job.note}`;
+        const r = rollDamage(job.expr, who, label, 0);
+        if (r) lines.push(`${job.expr} = ${r.total}`);
+      }
+    }
+    return lines;
+  }
 
   const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
@@ -1755,6 +1928,7 @@
         <button type="button" class="btn" data-act="turn-ref">⏱ Ход</button>
         <button type="button" class="btn" data-act="panic-ref">😱 Паника</button>
         <button type="button" class="btn" data-act="wounds-ref">🩸 Раны</button>
+        <button type="button" class="btn" data-act="crit-ref">☠ Криты</button>
         <button type="button" class="btn ${state.webhook && state.webhook.enabled ? "primary" : "ghost"}" data-act="webhook" title="Discord webhook">Webhook</button>`;
     if (state.view === "list") {
       box.innerHTML = `
@@ -1764,7 +1938,7 @@
         <button type="button" class="btn ghost" data-act="export">Экспорт</button>
         <button type="button" class="btn ghost" data-act="import">Импорт</button>
       `;
-    } else if (state.view === "panic" || state.view === "wounds" || state.view === "turn") {
+    } else if (state.view === "panic" || state.view === "wounds" || state.view === "crit" || state.view === "turn") {
       box.innerHTML = `
         <button type="button" class="btn" data-act="back">← К списку</button>
         ${refBtns}
@@ -1906,7 +2080,7 @@
                 </div>
                 <div class="turn-crit turn-crit--bad">
                   <span class="turn-crit-k">Крит. провал</span>
-                  <span class="turn-crit-v">провал + осложнение, и сразу проверка паники (d20 &gt; стресс).</span>
+                  <span class="turn-crit-v">провал + осложнение, и сразу проверка паники (d20 &gt; стресс); при провале — таблица 2к10+стресс.</span>
                 </div>
               </div>
               <ul class="turn-list turn-list--flat turn-list--rules">
@@ -1932,27 +2106,197 @@
     `;
   }
 
+  function defaultPanicStress() {
+    const open = state.openId ? getSheet(state.openId) : null;
+    if (open && open.type === "character") return Math.max(0, Number(open.stress) || 0);
+    if (Number.isFinite(Number(state.panicStress))) return Math.max(0, Number(state.panicStress));
+    return 2;
+  }
+
+  function rollPanicDice(stress) {
+    const a = rollDie(10);
+    const b = rollDie(10);
+    const s = Math.max(0, Number(stress) || 0);
+    const total = a + b + s;
+    return { a, b, stress: s, total, row: lookupPanic(total) };
+  }
+
+  function rollPanicSideEffects(row, stress, who) {
+    const lines = [];
+    if (!row) return lines;
+    const full = `${row.title}. ${row.text}`;
+    const t = full.replace(/[−–—]/g, "-");
+
+    const xDur = t.match(/[ХXхx]\s*к\s*10\s+(дней|минут|часов)/i);
+    if (xDur) {
+      const n = Math.max(1, Math.min(40, Number(stress) || 1));
+      const d = parseDice(`${n}d10`);
+      if (d) {
+        pushLog({
+          who,
+          icon: "⏱",
+          badge: "ДЛИТ.",
+          text: `паника · ${n}к10 ${xDur[1]} (Х=стресс ${stress}): [${d.rolls.join("+")}] = ${d.total}`,
+          kind: "ok",
+          emphasize: String(d.total),
+        });
+        lines.push(`${n}к10 ${xDur[1]} = ${d.total}`);
+      }
+    }
+
+    const durRe = /(\d+)\s*[кkd]\s*(\d+)\s+(часов|минут|дней)/gi;
+    let m;
+    while ((m = durRe.exec(t))) {
+      const expr = critDiceExpr(+m[1], +m[2]);
+      const d = parseDice(expr);
+      if (!d) continue;
+      pushLog({
+        who,
+        icon: "⏱",
+        badge: "ДЛИТ.",
+        text: `паника · ${m[1]}к${m[2]} ${m[3]}: [${d.rolls.join("+")}] = ${d.total}`,
+        kind: "ok",
+        emphasize: String(d.total),
+      });
+      lines.push(`${m[1]}к${m[2]} ${m[3]} = ${d.total}`);
+    }
+
+    // Только немедленный «Получи NкM Стресса» в начале эффекта, не условный в тексте фобии.
+    const stressGain = row.text.match(/^\s*получи(?:те)?\s+(\d+)\s*[кkd]\s*(\d+)\s+стресс/i);
+    if (stressGain) {
+      const expr = critDiceExpr(+stressGain[1], +stressGain[2]);
+      const d = parseDice(expr);
+      if (d) {
+        pushLog({
+          who,
+          icon: "😰",
+          badge: "СТРЕСС",
+          text: `паника · +${expr} стресса → ${d.total}`,
+          kind: "damage",
+          emphasize: String(d.total),
+        });
+        lines.push(`+${d.total} стресс`);
+      }
+    }
+
+    if (/2\s*[кkd]\s*10\s+поврежд/i.test(t)) {
+      const r = rollDamage("2d10", who, "паника · порог психоза", 0);
+      if (r) lines.push(`порог 2к10 = ${r.total}`);
+    }
+
+    return lines;
+  }
+
+  function resolvePanicResult(result, opts = {}, depth = 0) {
+    const who = opts.who || "паника";
+    const row = result.row;
+    const side = [];
+    state.panicHit = {
+      min: row.min,
+      total: result.total,
+      a: result.a,
+      b: result.b,
+      stress: result.stress,
+    };
+    state.panicStress = result.stress;
+    pushLog({
+      who,
+      icon: "😱",
+      badge: "ПАНИКА",
+      text: `2к10+стресс: ${result.a}+${result.b}+${result.stress}=${result.total} · ${panicRangeLabel(row)} · ${panicBlurb(row)}`,
+      kind: "panic-fail",
+      emphasize: String(result.total),
+    });
+    side.push(...rollPanicSideEffects(row, result.stress, who));
+
+    if (row && row.min === 27 && depth < 3) {
+      pushLog({
+        who,
+        icon: "🔁",
+        badge: "×2",
+        text: "Гора проблем — два дополнительных броска",
+        kind: "ok",
+        emphasize: "×2",
+      });
+      const first = resolvePanicResult(rollPanicDice(result.stress), opts, depth + 1);
+      const second = resolvePanicResult(rollPanicDice(result.stress), opts, depth + 1);
+      state.panicHit = {
+        min: 27,
+        total: result.total,
+        a: result.a,
+        b: result.b,
+        stress: result.stress,
+        extras: [first, second].map((r) => r && r.row && r.row.min).filter((n) => n != null),
+      };
+      return result;
+    }
+
+    if (side.length) state.panicHit = { ...state.panicHit, damageLines: side };
+    return result;
+  }
+
+  function logPanicTableDemo(min, opts = {}) {
+    const row = PANIC_TABLE.find((r) => r.min === Number(min)) || lookupPanic(Number(min));
+    state.panicHit = { min: row.min, total: row.min, demo: true };
+    pushLog({
+      who: opts.who || "паника · вручную",
+      icon: "😱",
+      badge: "ПАНИКА",
+      text: `${panicRangeLabel(row)} · ${panicBlurb(row)}`,
+      kind: "panic-fail",
+      emphasize: panicRangeLabel(row),
+    });
+  }
+
   function renderPanicRef() {
+    const hit = state.panicHit;
+    const hitRow = hit ? PANIC_TABLE.find((r) => r.min === hit.min) : null;
+    const stress = defaultPanicStress();
     el("#main").innerHTML = `
       <div class="sheet panic-ref">
         <div class="mosh">
           <section class="mosh-section">
-            <p class="sec-title">Справка мастера · паника (Mothership 1e)</p>
-            <p class="hint">По рулбуку 1e: кость паники — <strong>d20</strong>. Нужно выбросить <strong>больше</strong> текущего стресса. Если d20 ≤ стресса — паника, и это же число = строка таблицы. Состояния держатся, пока их не снимут лечением или отпуском.</p>
+            <p class="sec-title">Справка мастера · эффекты паники (2к10 + стресс)</p>
+            <p class="hint">По рулбуку проверка на листе: <strong>d20 &gt; стресса</strong> = успех (паники нет). При провале бросай здесь: <strong>2к10 + текущий стресс</strong> → строка таблицы.</p>
+            <div class="filters panic-actions" style="margin:10px 0">
+              <label class="panic-stress-field">Стресс
+                <input type="number" min="0" max="99" id="panic-stress" value="${stress}" data-panic-stress>
+              </label>
+              <button type="button" class="btn primary" data-panic-roll>Бросить 2к10 + стресс</button>
+              <button type="button" class="btn" data-panic-clear ${hit ? "" : "disabled"}>Сбросить подсветку</button>
+            </div>
+            ${hitRow ? `
+              <div class="panic-result">
+                <div class="panic-result-dice">
+                  ${hit.demo
+                    ? `<em>строка</em> ${esc(panicRangeLabel(hitRow))}`
+                    : `<em>2к10+стресс</em> ${hit.a}+${hit.b}+${hit.stress}=${hit.total}`}
+                  <span class="panic-result-arrow">→</span>
+                  <span>${esc(panicRangeLabel(hitRow))} · ${esc(hitRow.title)}</span>
+                </div>
+                <p class="panic-result-text">${esc(hitRow.text)}</p>
+                ${(hit.damageLines && hit.damageLines.length) ? `
+                  <p class="crit-result-dmg"><em>броски</em> ${hit.damageLines.map(esc).join(" · ")}</p>
+                ` : ""}
+              </div>` : ""}
             <table class="panic-table">
               <thead>
-                <tr><th>d20</th><th>Эффект (PSG)</th><th></th></tr>
+                <tr><th>Бросок</th><th>Панический эффект</th></tr>
               </thead>
               <tbody>
-                ${PANIC_TABLE.map((row) => `
-                  <tr>
-                    <td class="panic-roll">${String(row.roll).padStart(2, "0")}</td>
+                ${PANIC_TABLE.map((row) => {
+                  const isHit = hit && hit.min === row.min;
+                  return `
+                  <tr class="${isHit ? "is-panic-hit" : ""}">
+                    <td class="panic-roll">${esc(panicRangeLabel(row))}</td>
                     <td>
-                      <div class="panic-title">${esc(row.title)} <span class="panic-en">${esc(row.en)}</span>${(row.flags || []).includes("condition") ? ` <span class="panic-tag">состояние</span>` : ""}</div>
-                      <div class="panic-text">${esc(row.text)}</div>
+                      <button type="button" class="panic-cell" data-panic-demo="${row.min}">
+                        <div class="panic-title">${esc(row.title)}</div>
+                        <div class="panic-text">${esc(row.text)}</div>
+                      </button>
                     </td>
-                    <td><button type="button" class="btn small" data-panic-demo="${row.roll}">в лог</button></td>
-                  </tr>`).join("")}
+                  </tr>`;
+                }).join("")}
               </tbody>
             </table>
           </section>
@@ -1996,6 +2340,98 @@
                             ${esc(row[t.id])}
                           </button>
                         </td>`).join("")}
+                    </tr>`).join("")}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    `;
+  }
+
+  function formatCritResult(part, sev) {
+    const p = CRIT_PARTS[part];
+    const s = CRIT_SEVERITIES[sev];
+    const text = critCell(part, sev);
+    const sevLabel = s.hint ? `${s.name} (${s.hint})` : s.name;
+    return {
+      part,
+      sev,
+      partName: p.name,
+      sevName: sevLabel,
+      text,
+      line: `часть ${String(part).padStart(2, "0")} ${p.name} → ранение ${String(sev).padStart(2, "0")} ${sevLabel}: ${text}`,
+    };
+  }
+
+  function logCritResult(part, sev, opts = {}) {
+    const who = opts.who || "крит";
+    const r = formatCritResult(part, sev);
+    pushLog({
+      who,
+      icon: "☠",
+      badge: "КРИТ",
+      text: r.line,
+      kind: "damage",
+      emphasize: `${String(part).padStart(2, "0")}→${String(sev).padStart(2, "0")}`,
+    });
+    const damageLines = rollCritExtraDamage(r.text, who);
+    state.critHit = { part, sev, damageLines };
+    r.damageLines = damageLines;
+    return r;
+  }
+
+  function renderCritRef() {
+    const hit = state.critHit;
+    const hitResult = hit ? formatCritResult(hit.part, hit.sev) : null;
+    el("#main").innerHTML = `
+      <div class="sheet crit-ref">
+        <div class="mosh">
+          <section class="mosh-section">
+            <p class="sec-title">Справка мастера · критические ранения (домовка)</p>
+            <p class="hint">При критическом попадании врага по игроку: сначала <strong>1d10</strong> (0–9) — <strong>часть тела</strong>, затем <strong>1d10</strong> (0–9) — <strong>тяжесть</strong>.</p>
+            <div class="filters crit-actions" style="margin:10px 0">
+              <button type="button" class="btn primary" data-crit-roll>Бросить крит · часть → ранение</button>
+              <button type="button" class="btn" data-crit-clear ${hit ? "" : "disabled"}>Сбросить подсветку</button>
+            </div>
+            ${hitResult ? `
+              <div class="crit-result">
+                <div class="crit-result-dice">
+                  <span><em>часть</em> ${String(hitResult.part).padStart(2, "0")} · ${esc(hitResult.partName)}</span>
+                  <span class="crit-result-arrow">→</span>
+                  <span><em>ранение</em> ${String(hitResult.sev).padStart(2, "0")} · ${esc(hitResult.sevName)}</span>
+                </div>
+                <p class="crit-result-text">${esc(hitResult.text)}</p>
+                ${(hit.damageLines && hit.damageLines.length) ? `
+                  <p class="crit-result-dmg"><em>урон</em> ${hit.damageLines.map(esc).join(" · ")}</p>
+                ` : ""}
+              </div>` : ""}
+            <div class="wounds-scroll crit-scroll">
+              <table class="wounds-table crit-table">
+                <thead>
+                  <tr>
+                    <th>d10</th>
+                    <th>Тяжесть</th>
+                    ${CRIT_PARTS.map((p) => `
+                      <th>${String(p.id)}<br>${esc(p.name)}</th>
+                    `).join("")}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${CRIT_SEVERITIES.map((s) => `
+                    <tr>
+                      <td class="panic-roll">${String(s.id).padStart(2, "0")}</td>
+                      <td class="wound-sev">${esc(s.name)}${s.hint ? `<span class="crit-sev-hint">${esc(s.hint)}</span>` : ""}</td>
+                      ${CRIT_PARTS.map((p) => {
+                        const isHit = hit && hit.part === p.id && hit.sev === s.id;
+                        return `
+                        <td class="${isHit ? "is-crit-hit" : ""}">
+                          <button type="button" class="wound-cell crit-cell" data-crit-part="${p.id}" data-crit-sev="${s.id}">
+                            ${esc(critCell(p.id, s.id))}
+                          </button>
+                        </td>`;
+                      }).join("")}
                     </tr>`).join("")}
                 </tbody>
               </table>
@@ -2288,9 +2724,6 @@
     }
 
     migrateMonsterVitals(s);
-    const atkN = (s.attacks || []).length;
-    const special = String(s.special || "").replace(/\s+/g, " ").trim();
-    const specialShort = special.length > 90 ? `${special.slice(0, 87)}…` : special;
     return `
       <button type="button" class="card card--mon monster" data-open="${s.id}">
         <div class="card-head">
@@ -2320,11 +2753,10 @@
             ${cardMeter(s.wounds, s.woundsMax, "is-wounds")}
           </div>
           <div class="card-vital">
-            <span class="card-vital-k">Броня / атаки</span>
-            <span class="card-vital-v">${Number(s.armor) || 0}<span class="card-vital-max"> ПБ · ${atkN} атк.</span></span>
+            <span class="card-vital-k">Броня</span>
+            <span class="card-vital-v">${Number(s.armor) || 0}<span class="card-vital-max"> ПБ</span></span>
           </div>
         </div>
-        ${specialShort ? `<p class="card-special">${esc(specialShort)}</p>` : `<p class="card-special is-mute">Особых правил нет</p>`}
       </button>`;
   }
 
@@ -2358,7 +2790,7 @@
     return "health-crack--crit";
   }
 
-  /** Глитч по абсолютному стрессу (паника на d20). */
+  /** Глитч по абсолютному стрессу. */
   function stressGlitchClass(stress) {
     const s = Math.max(0, Number(stress) || 0);
     if (s <= 5) return "stress-glitch--low";
@@ -2574,7 +3006,7 @@
                   <div class="vital-pair vital-pair--solo">
                     <input class="vital-num stress-glitch-num" id="stress-display" type="number" data-f="stress" value="${Number(sheet.stress) || 0}" title="текущий стресс" aria-label="Стресс">
                   </div>
-                  <button type="button" class="btn small vital-panic" data-panic title="d20 ≤ стресса = паника">Проверка паники</button>
+                  <button type="button" class="btn small vital-panic" data-panic title="1e: d20 > стресса = успех (паники нет)">Проверка паники</button>
                 </div>
 
                 <div class="vital-card vital-card--armor ${armorShatterClass(sheet.armor)}">
@@ -2829,6 +3261,8 @@
       renderPanicRef();
     } else if (state.view === "wounds") {
       renderWoundsRef();
+    } else if (state.view === "crit") {
+      renderCritRef();
     } else if (state.view === "sheet" && state.openId) {
       const sheet = getSheet(state.openId);
       if (!sheet) {
@@ -3012,6 +3446,10 @@
         state.view = "wounds";
         save();
         render();
+      } else if (act === "crit-ref") {
+        state.view = "crit";
+        save();
+        render();
       } else if (act === "delete") {
         if (!state.openId) return;
         if (!confirm("Удалить этот лист?")) return;
@@ -3153,18 +3591,25 @@
       return;
     }
 
+    if (e.target.closest("[data-panic-roll]")) {
+      const input = el("#panic-stress");
+      const stress = input ? Math.max(0, Number(input.value) || 0) : defaultPanicStress();
+      state.panicStress = stress;
+      resolvePanicResult(rollPanicDice(stress), { who: "паника" });
+      if (state.view === "panic") render();
+      return;
+    }
+
+    if (e.target.closest("[data-panic-clear]")) {
+      state.panicHit = null;
+      if (state.view === "panic") render();
+      return;
+    }
+
     const panicDemo = e.target.closest("[data-panic-demo]");
     if (panicDemo) {
-      const n = Number(panicDemo.dataset.panicDemo);
-      const blurb = PANIC[n] || "Эффект паники.";
-      pushLog({
-        who: "справка",
-        icon: "😱",
-        badge: "ПАНИКА",
-        text: `d20 ${String(n).padStart(2, "0")}: ${blurb}`,
-        kind: "panic-fail",
-        emphasize: String(n),
-      });
+      logPanicTableDemo(Number(panicDemo.dataset.panicDemo), { who: "паника · вручную" });
+      if (state.view === "panic") render();
       return;
     }
 
@@ -3208,6 +3653,29 @@
           emphasize: String(face).padStart(2, "0"),
         });
       }
+      return;
+    }
+
+    if (e.target.closest("[data-crit-roll]")) {
+      const part = rollDie(10) % 10;
+      const sev = rollDie(10) % 10;
+      logCritResult(part, sev);
+      if (state.view === "crit") render();
+      return;
+    }
+
+    if (e.target.closest("[data-crit-clear]")) {
+      state.critHit = null;
+      if (state.view === "crit") render();
+      return;
+    }
+
+    const critCellBtn = e.target.closest("[data-crit-part][data-crit-sev]");
+    if (critCellBtn) {
+      const part = Number(critCellBtn.dataset.critPart);
+      const sev = Number(critCellBtn.dataset.critSev);
+      logCritResult(part, sev, { who: "крит · вручную" });
+      if (state.view === "crit") render();
       return;
     }
 
@@ -3647,24 +4115,24 @@
 
   function doPanic(sheet) {
     const roll = rollDie(20);
-    const stress = Number(sheet.stress) || 0;
-    // Только проверка (d20 > стресс). Таблицу паники мастер бросает отдельно.
-    if (roll <= stress) {
-      pushLog({
-        who: sheet.name,
-        icon: "❌",
-        badge: "ПРОВАЛ",
-        text: `Проверка паники: d20=${roll} ≤ стресс ${stress} — провал`,
-        kind: "panic-fail",
-        emphasize: String(roll),
-      });
-    } else {
+    const stress = Math.max(0, Number(sheet.stress) || 0);
+    // Mothership 1e: d20 > Stress = keep it together; ≤ Stress = Panic (таблицу — отдельно).
+    if (roll > stress) {
       pushLog({
         who: sheet.name,
         icon: "✅",
         badge: "УСПЕХ",
         text: `Проверка паники: d20=${roll} > стресс ${stress} — успех`,
         kind: "panic-ok",
+        emphasize: String(roll),
+      });
+    } else {
+      pushLog({
+        who: sheet.name,
+        icon: "❌",
+        badge: "ПРОВАЛ",
+        text: `Проверка паники: d20=${roll} ≤ стресс ${stress} — провал`,
+        kind: "panic-fail",
         emphasize: String(roll),
       });
     }
